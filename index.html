@@ -6,11 +6,29 @@
     <title>TV Show Project | Saman (SamanZahedi)</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
-    <div id="root"></div>
-
+    <main>
+      <div class="main">
+        <div class="boxes">
+          <input id="search-box" type="text" />
+          <div id="search-count">Displaying episodes</div>
+        </div>
+        <div id="root"></div>
+      </div>
+    </main>
+    <footer>
+      <p class="licensing">
+        The data has (originally) come from
+        <a href="TVMaze.com" target="_blank">TVMaze.com</a>
+      </p>
+    </footer>
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
 
