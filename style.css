@@ -1,4 +1,6 @@
 body {
+  margin: 0;
+  padding: 0;
   color: black;
   width: 100%;
   height: 100%;
@@ -22,12 +24,11 @@ body {
   flex-direction: column;
   align-items: flex-start;
   border: 2px solid rgb(214, 211, 206);
-  padding: 5px;
+  padding: 7px;
   border-radius: 10px;
-  text-align: center;
   box-shadow: 2px 12px 16px 0 rgba(0, 0, 0, 0.24);
   text-align: start;
-  transition: 0.3s;
+  transition: 0.7s;
 }
 .episode:hover {
   box-shadow: 16px 24px 30px 0 rgb(156, 156, 156);
@@ -81,6 +82,7 @@ nav {
   height: 5vw;
 }
 #search-box {
+  font-size: 19px;
   width: 45%;
   margin-top: 1%;
   cursor: pointer;
@@ -92,10 +94,13 @@ nav {
 }
 .navbar {
   background-color: rgb(221, 240, 245);
-  margin-bottom: 2%;
+  margin-bottom: 3%;
   box-shadow: 2px 12px 16px 0 rgba(148, 146, 146, 0.24);
+  width: 97%;
+  margin-right: 0;
 }
 #episodes {
+  font-size: 19px;
   cursor: pointer;
 }
 .episodeName {
