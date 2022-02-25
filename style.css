@@ -93,20 +93,20 @@ nav {
   width: 45%;
 }
 .navbar {
-  background-color: rgb(221, 240, 245);
+  background-color: rgb(243, 226, 178);
   margin-bottom: 3%;
   box-shadow: 2px 12px 16px 0 rgba(148, 146, 146, 0.24);
   width: 97%;
-  margin-right: 0;
 }
 #episodes {
   font-size: 19px;
   cursor: pointer;
 }
 .episodeName {
-  border: 1px solid #b4b3b3;
+  background-color: rgb(243, 226, 178);
+  border: 1px solid #a0795f;
   margin: 2%;
   padding: 2%;
-  width: 90%;
-  border-radius: 10%;
+  width: 93%;
+  border-radius: 8%;
 }
