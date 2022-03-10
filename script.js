@@ -1,106 +1,175 @@
 //You can edit ALL of the code here
-const searchBox = document.getElementById("search-box");
-const searchCount = document.getElementById("search-count");
-let navbar = document.querySelector(".navbar");
-let pageNavigation = document.createElement("nav");
-navbar.appendChild(pageNavigation);
+const searchBox = document.getElementById("search");
+const episodesDropdown = document.getElementById("episodelist");
+const showsDropdown = document.getElementById("allshows");
+const displayCountEl = document.getElementById("result-count");
 
 function setup() {
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
-  searchBox.addEventListener("keyup", onSearchKeyUp);
-  addEpisodesSelector();
-}
-
-const formatTitleNumbers = (number) =>
-  number < 10 ? `0${number}` : `${number}`;
-
-function makePageForEpisodes(allEpisodes) {
-  const rootElem = document.getElementById("root");
-  rootElem.innerHTML = "";
-  allEpisodes.forEach((episode) => {
-    let episodeContainer = document.createElement("div");
-    episodeContainer.className = "episode";
-    let title = document.createElement("h3");
-    title.classList.add("episodeName");
-    title.innerText = `${episode.name} - S${formatTitleNumbers(
-      episode.season
-    )}E${formatTitleNumbers(episode.number)}`;
-    let episodeImage = document.createElement("img");
-    episodeImage.src = episode.image.medium;
-    let summaryOfEpisode = document.createElement("p");
-    summaryOfEpisode.innerText = episode.summary
-      .replace("<p>", "")
-      .replace("</p>", "");
-    episodeContainer.appendChild(title);
-    episodeContainer.appendChild(episodeImage);
-    episodeContainer.appendChild(summaryOfEpisode);
-    rootElem.appendChild(episodeContainer);
+  episodesDropdown.innerText = "";
+  showsDropdown.innerText = "";
+  removeDisplayCount();
+  allShows = getAllShows();
+  const sortedAllShows = allShows.sort((a, b) => {
+    return a.name < b.name ? -1 : 1;
   });
+  createShowsDropdownOptions(sortedAllShows);
+  populateCards(sortedAllShows, "show");
 }
-function onSearchKeyUp(event) {
-  const searchTerm = event.target.value.toLowerCase();
-  const allEpisodes = getAllEpisodes();
-  const filteredEpisodes = allEpisodes.filter((e) => {
-    const episodeName = e.name.toLowerCase();
-    const episodeSummary = e.summary.toLowerCase();
+
+// I need to get my data from API using after choosing shows which gives me show IDs
+// So I'll use my next then to get data once "change" is done
+
+function getEpisodes(showId) {
+  const endpoint = `https://api.tvmaze.com/shows/${showId}/episodes`;
+  return fetch(endpoint).then((response) => response.json());
+}
+
+searchBox.addEventListener("input", (e) => {
+  let searchPhrase = e.target.value.toLowerCase();
+  let searchResult = search(searchPhrase, allEpisodes);
+  populateCards(searchResult);
+  displayCount(searchResult);
+});
+
+function search(phrase, episodes) {
+  const filteredEpisodes = episodes.filter((episode) => {
+    const { name, summary } = episode;
     return (
-      episodeName.includes(searchTerm) || episodeSummary.includes(searchTerm)
+      name.toLowerCase().includes(phrase) ||
+      summary.toLowerCase().includes(phrase)
     );
   });
-  const filteredCount = filteredEpisodes.length;
-  const allCount = allEpisodes.length;
-  const countString = `Displaying ${filteredCount} / ${allCount}`;
-  searchCount.innerText = countString;
-  makePageForEpisodes(filteredEpisodes);
+  return filteredEpisodes;
 }
 
-// click to choose addition
-function addEpisodesSelector() {
-  let selectAnEpisode = document.createElement("select");
-  selectAnEpisode.setAttribute("id", "episodes");
+// to calculate length of both searched and allEpisodes arrays.
+function displayCount(searchedEpisodes) {
+  const totalEpisodesLength = allEpisodes.length;
+  const searchedEpisodesLength = searchedEpisodes.length;
+  displayCountEl.innerText = `Displaying ${searchedEpisodesLength}/${totalEpisodesLength} episodes`;
+}
 
-  pageNavigation.prepend(selectAnEpisode);
+function removeDisplayCount() {
+  displayCountEl.innerText = "";
+}
 
-  let getEpisodesTitles = document.getElementsByClassName("episodeName");
+function concatenateSeasonAndNumber(episode) {
+  const { season, number } = episode;
+  let result = "";
+  result += season < 10 ? `S0${season}` : `S${season}`;
+  result += number < 10 ? `E0${number}` : `E${number}`;
+  return result;
+}
 
-  let episodeOption = document.createElement("option");
-  episodeOption.innerText = "Click to choose";
-  selectAnEpisode.appendChild(episodeOption);
+function createOptionForShowList(episode) {
+  const option = document.createElement("option");
+  option.setAttribute("value", episode.id);
+  option.innerText = episode.name;
+  return option;
+}
 
-  for (
-    let titleIndex = 0;
-    titleIndex < getEpisodesTitles.length;
-    titleIndex++
-  ) {
-    episodeOption = document.createElement("option");
-    selectAnEpisode.appendChild(episodeOption);
+function createShowsDropdownOptions(allEpisodes) {
+  showsDropdown.appendChild(
+    createOptionForShowList({ name: "all shows", id: "all" })
+  );
+  allEpisodes.forEach((episode) => {
+    const option = createOptionForShowList(episode);
+    showsDropdown.appendChild(option);
+  });
+}
 
-    episodeOption.innerText = getEpisodesTitles[titleIndex].innerText;
+showsDropdown.addEventListener("change", (e) => {
+  let showId = e.target.value;
+  if (showId === "all") {
+    populateCards(allShows, "show");
+    removeDisplayCount();
+    makeEpisodeList([]);
+  } else {
+    getEpisodes(showId).then((data) => {
+      allEpisodes = data;
+      populateCards(allEpisodes);
+      displayCount(allEpisodes);
+      makeEpisodeList(allEpisodes);
+    });
+  }
+});
+
+function createOption(episode) {
+  const option = document.createElement("option");
+  option.setAttribute("value", episode.id);
+  let title = concatenateSeasonAndNumber(episode);
+  option.innerText = title + ` - ${episode.name}`;
+  return option;
+}
+
+function makeEpisodeList(allEpisodes) {
+  episodesDropdown.innerHTML = "";
+  allEpisodes.forEach((episode) => {
+    const option = createOption(episode);
+    episodesDropdown.appendChild(option);
+  });
+}
+
+// location.href property will set the href value to point to an anchor
+episodesDropdown.addEventListener("change", (e) => {
+  let value = e.target.value;
+  console.log(value);
+  location.href = `#${value}`;
+  let selectedCard = document.getElementById(value);
+  selectedCard.classList.add("selected-card");
+  setTimeout(() => {
+    selectedCard.classList.remove("selected-card");
+  }, 1500);
+});
+
+function createCard(episode, type) {
+  const li = document.createElement("li");
+  const cardTitleWrapper = document.createElement("div");
+  const episodeTitle = document.createElement("p");
+  const image = document.createElement("img");
+  const description = document.createElement("p");
+  const link = document.createElement("a");
+
+  li.setAttribute("class", "card");
+  cardTitleWrapper.setAttribute("class", "card-title-wrapper");
+
+  episodeTitle.setAttribute("class", "episode-title");
+
+  li.setAttribute("id", episode.id);
+  if (type !== "show") {
+    let title = concatenateSeasonAndNumber(episode);
+    episodeTitle.innerText = episode.name + " - " + title;
+  } else {
+    episodeTitle.innerText = episode.name;
   }
 
-  selectAnEpisode.addEventListener("change", changeEpisode);
+  image.setAttribute("class", "card-img");
+  image.setAttribute(
+    "src",
+    episode.image ? episode.image.medium : "Picture not found"
+  );
+
+  description.setAttribute("class", "card-desc");
+  description.innerHTML = episode.summary;
+
+  link.setAttribute("class", "imageLink");
+  link.href = episode.url;
+  link.innerHTML = '<img id="playBtn" src="./play.jpg" />';
+
+  cardTitleWrapper.appendChild(episodeTitle);
+  li.appendChild(cardTitleWrapper);
+  li.appendChild(image);
+  li.appendChild(description);
+  li.appendChild(link);
+  return li;
 }
-
-function changeEpisode(e) {
-  let selectedOption = e.target.value;
-  let getResultsOnPage = document.getElementsByClassName("episode");
-
-  let allResultsOnPage = Array.from(getResultsOnPage);
-
-  allResultsOnPage.forEach((result) => {
-    if (result.innerText.includes(selectedOption)) {
-      result.style.display = "flex";
-    } else {
-      result.style.display = "none";
-    }
-
-    searchCount.innerText = `Displaying 1/${getResultsOnPage.length} results`;
-
-    if (selectedOption === "Click to choose") {
-      result.style.display = "flex";
-      searchCount.innerText = `Displaying ${getResultsOnPage.length} results`;
-    }
+// type parameter is defined to be used in if statement where I want to display show names in title
+function populateCards(episodeList, type) {
+  const ul = document.getElementById("cards");
+  ul.innerHTML = "";
+  episodeList.forEach((episode) => {
+    const li = createCard(episode, type);
+    ul.appendChild(li);
   });
 }
 

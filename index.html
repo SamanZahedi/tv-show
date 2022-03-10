@@ -5,37 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TV Show Project | Saman (SamanZahedi)</title>
     <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,600;1,300&display=swap"
       rel="stylesheet"
     />
   </head>
 
   <body>
-    <header>
-      <div class="navbar">
-        <div class="boxes">
-          <input id="search-box" type="text" placeholder="Search" />
-          <div id="search-count">Displaying episodes</div>
+    <section id="header-wrapper">
+      <div id="header">
+        <div id="header-logo">
+          <img id="pageLogo" src="house-solid.svg" alt="" onclick="setup()" />
         </div>
+        <select name="allShows" id="allshows"></select>
+        <select name="tvshowlist" id="episodelist"></select>
+        <input
+          type="text"
+          id="search"
+          name="search"
+          placeholder="Search"
+          autocomplete="off"
+        />
+        <span id="result-count"></span>
       </div>
-    </header>
-    <main>
-      <div class="main">
-        <div id="root"></div>
-      </div>
-    </main>
+    </section>
+    <section id="episodes">
+      <ul id="cards"></ul>
+    </section>
     <footer>
-      <p class="licensing">
-        The data has (originally) come from
-        <a href="TVMaze.com" target="_blank">TVMaze.com</a>
-      </p>
+      The data has (originally) come from
+      <a href="https://www.tvmaze.com/" target="_blank">TVMaze.com</a>
     </footer>
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
-
+    <!-- <script src="episodes.js"></script> -->
+    <script src="shows.js"></script>
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
   </body>

@@ -1,112 +1,156 @@
+:root {
+  --bgTitle-color: rgb(243, 226, 178);
+  --bgColor: rgb(241, 234, 234);
+}
+
 body {
   margin: 0;
   padding: 0;
-  color: black;
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
+  font-family: "Open Sans", sans-serif;
 }
-
-#root {
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-}
-
-.episode {
-  width: 28%;
-  display: flex;
-  margin-bottom: 15px;
-  background-color: rgb(241, 234, 234);
-  flex-direction: column;
-  align-items: flex-start;
-  border: 2px solid rgb(214, 211, 206);
-  padding: 7px;
+#pageLogo {
+  cursor: pointer;
+  width: 45px;
+  height: 45px;
+  padding: 2px;
   border-radius: 10px;
-  box-shadow: 2px 12px 16px 0 rgba(0, 0, 0, 0.24);
-  text-align: start;
-  transition: 0.7s;
+  margin-right: 15px;
 }
-.episode:hover {
-  box-shadow: 16px 24px 30px 0 rgb(156, 156, 156);
+#pageLogo:hover {
+  width: 55px;
 }
-img {
-  width: 100%;
+
+#header-wrapper {
+  padding: 10px 5px;
 }
-.boxes {
+#header {
+  width: 1110px;
+  margin: 0 auto;
+  padding: 10px 0;
+  border-radius: 10px;
   display: flex;
-  flex-direction: row;
   justify-content: space-evenly;
-}
-.navigationWrapper {
-  margin-bottom: 50px;
-  padding: 20px 10px;
-
-  background-color: rgb(249, 249, 249);
-  font-family: "Poppins";
+  box-shadow: 2px 12px 26px 0 rgba(0, 0, 0, 0.678);
+  background-color: var(--bgTitle-color);
 }
 
-nav {
-  width: 100%;
-  height: 120px;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-evenly;
+#result-count {
+  height: 35px;
+  margin-top: 15px;
 }
-.backToAllButton {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-.backButton {
-  font-size: 1.2rem;
-  color: #5c5c5c;
-  background: white;
-  border: 3px solid #5c5c5c;
-
-  padding-left: 2%;
-  padding-right: 2%;
-  margin-top: 1%;
-
-  cursor: pointer;
-}
-nav {
-  justify-content: flex-start;
-  margin-left: 3%;
-  height: 5vw;
-}
-#search-box {
+#search {
   font-size: 19px;
-  width: 45%;
-  margin-top: 1%;
+  margin-right: 10px;
+  padding: 3px;
+  width: 180px;
+  border-radius: 15px;
+  height: 25px;
+  margin-top: 10px;
+  cursor: pointer;
+  border: 0.1px solid;
+}
+
+#search:focus {
+  width: 250px;
+}
+
+#episodelist {
+  margin-right: 10px;
+  font-size: 17px;
+  padding: 5px;
+  width: 250px;
+  border-radius: 15px;
+  background-color: white;
+  height: 35px;
+  margin-top: 10px;
   cursor: pointer;
 }
 
-#search-count {
-  margin-top: 1%;
-  width: 45%;
+#allshows {
+  margin-right: 10px;
+  font-size: 17px;
+  padding: 5px;
+  width: 250px;
+  border-radius: 15px;
+  background-color: white;
+  height: 35px;
+  margin-top: 10px;
+  cursor: pointer;
 }
-.navbar {
-  background-color: rgb(243, 226, 178);
-  margin-bottom: 3%;
-  box-shadow: 2px 12px 16px 0 rgba(148, 146, 146, 0.24);
-  width: 97%;
-}
+
 #episodes {
-  font-size: 19px;
+  width: 1200px;
+  margin: 0 auto;
+}
+
+#cards {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 340px;
+  border: 1px solid var(--bgTitle-color);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px 0;
+  box-shadow: 2px 12px 26px 0 rgba(48, 47, 47, 0.678);
+}
+.card:hover {
+  background-color: rgb(228, 226, 226);
+  color: black;
+  box-shadow: 16px 24px 30px 0 rgb(0, 0, 0);
+}
+.card:hover {
+  border: 1px solid var(--bgTitle-color);
+  transform: scale(1.02);
+}
+.selected-card {
+  background-color: rgb(162, 201, 144);
+}
+
+.card-title-wrapper {
+  border-radius: 15px;
+  margin: 10px 0;
+  text-align: center;
+  background-color: var(--bgTitle-color);
+  /* border: 1px solid #a0795f; */
+  box-shadow: 16px 24px 30px 0 rgb(199, 198, 198);
+}
+.card-img {
+  width: 90%;
+  margin: 5px auto;
+  display: block;
+  border-radius: 5px;
+  border: 1px solid rgb(219, 218, 218);
+  box-shadow: 16px 24px 30px 0 rgb(163, 162, 162);
+}
+
+#playBtn {
+  width: 15%;
   cursor: pointer;
 }
-.episodeName {
-  background-color: rgb(243, 226, 178);
-  border: 1px solid #a0795f;
-  margin: 2%;
-  padding: 2%;
-  width: 93%;
-  border-radius: 8%;
+#playBtn:hover {
+  width: 20%;
+}
+footer a {
+  text-decoration: none;
+  color: black;
+}
+footer a:hover {
+  font-size: 23px;
+}
+footer {
+  padding: 16px;
+  text-align: center;
+  background-color: var(--bgTitle-color);
+  width: 40%;
+  margin: 20px auto;
+  border-radius: 15px;
 }
