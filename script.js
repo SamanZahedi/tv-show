@@ -3,14 +3,16 @@ const searchBox = document.getElementById("search");
 const episodesDropdown = document.getElementById("episodelist");
 const showsDropdown = document.getElementById("allshows");
 const displayCountEl = document.getElementById("result-count");
-
+let allEpisodes;
 function setup() {
+  document.documentElement.scrollTop = 0;
   episodesDropdown.innerText = "";
   showsDropdown.innerText = "";
+  searchBox.value = "";
   removeDisplayCount();
   allShows = getAllShows();
   const sortedAllShows = allShows.sort((a, b) => {
-    return a.name < b.name ? -1 : 1;
+    return a.name < b.name ? -1 : a.name < b.name ? 1 : 0;
   });
   createShowsDropdownOptions(sortedAllShows);
   populateCards(sortedAllShows, "show");
@@ -119,7 +121,7 @@ episodesDropdown.addEventListener("change", (e) => {
   selectedCard.classList.add("selected-card");
   setTimeout(() => {
     selectedCard.classList.remove("selected-card");
-  }, 1500);
+  }, 3000);
 });
 
 function createCard(episode, type) {
@@ -146,7 +148,9 @@ function createCard(episode, type) {
   image.setAttribute("class", "card-img");
   image.setAttribute(
     "src",
-    episode.image ? episode.image.medium : "Picture not found"
+    episode.image
+      ? episode.image.medium
+      : "https://www.thermaxglobal.com/wp-content/uploads/2020/05/image-not-found-300x169.jpg"
   );
 
   description.setAttribute("class", "card-desc");
